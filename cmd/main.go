@@ -1,18 +1,18 @@
 package main
 
 import (
+	"defizone-api/internal/handler"
 	"log"
 	"net/http"
 )
 
-func getIndex(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Hello World"))
-}
-
 func main() {
+	//TODO: Сделать роутинг для пользователей и администратора
+	//TODO: Добавить разделение версий API
 	router := http.NewServeMux()
 
-	router.HandleFunc("/", getIndex)
+	router.HandleFunc("/", handler.GetIndex)
+	router.HandleFunc("/_/admin/create_key", handler.CreateLicense)
 
 	server := &http.Server{
 		Addr:    ":8080",
