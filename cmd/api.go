@@ -20,17 +20,20 @@ func NewAPIServer(addr string) *APIServer {
 func (s *APIServer) Start() error {
 	router := http.NewServeMux()
 
-	// User routes
+	// Client routes
 	router.HandleFunc("/client/v1/initialization_app", handler.InitializationApp)
 	router.HandleFunc("/client/v1/authentication", handler.Authentication)
 	router.HandleFunc("/client/v1/check_token", handler.CheckToken)
 
 	// Admin routes
-	router.HandleFunc("/_/admin/create_key", handler.CreateLicense)
+	router.HandleFunc("GET /_/admin/license/create_license", middleware.AuthMiddleware(handler.CreateLicense))
+	router.HandleFunc("/_/admin/license/update_license", handler.UpdateLicense)
+	router.HandleFunc("/_/admin/license/delete_license", handler.DeleteLicense)
+	router.HandleFunc("/_/admin/license/all_license", handler.AllLicense)
 
 	server := &http.Server{
 		Addr:    s.addr,
-		Handler: middleware.ResponseLogging(router),
+		Handler: middleware.LoggingMiddleware(router),
 	}
 	log.Printf("server listening on %s", s.addr)
 

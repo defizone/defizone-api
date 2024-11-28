@@ -2,3 +2,5 @@
 GET http://localhost:8080/
 
 ###
+GET http://localhost:8000/_/admin/license/create_license
+X-Defizone-Token: 123e
