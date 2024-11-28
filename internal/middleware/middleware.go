@@ -6,9 +6,17 @@ import (
 	"time"
 )
 
-var API_TOKEN = "123"
+var ApiToken = "Ur6PXzDVXWZGgg9dSYRqOQenfJ8EYp"
 
-func LoggingMiddleware(next http.Handler) http.HandlerFunc {
+type ErrorToken struct {
+	Status bool `json:"status"`
+	Data   struct {
+		Field   string `json:"field"`
+		Message string `json:"message"`
+	} `json:"data"`
+}
+
+func LoggingMiddleware(next *http.ServeMux) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
 		next.ServeHTTP(w, r)
@@ -19,9 +27,11 @@ func LoggingMiddleware(next http.Handler) http.HandlerFunc {
 func AuthMiddleware(next func(w http.ResponseWriter, r *http.Request)) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		token := r.Header.Get("X-Defizone-Token")
-		if token == API_TOKEN {
-			http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		if token != ApiToken {
+			http.Error(w, "", http.StatusUnauthorized)
 			return
 		}
+
+		next(w, r)
 	}
 }

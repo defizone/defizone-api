@@ -26,10 +26,10 @@ func (s *APIServer) Start() error {
 	router.HandleFunc("/client/v1/check_token", handler.CheckToken)
 
 	// Admin routes
-	router.HandleFunc("GET /_/admin/license/create_license", middleware.AuthMiddleware(handler.CreateLicense))
-	router.HandleFunc("/_/admin/license/update_license", handler.UpdateLicense)
-	router.HandleFunc("/_/admin/license/delete_license", handler.DeleteLicense)
-	router.HandleFunc("/_/admin/license/all_license", handler.AllLicense)
+	router.HandleFunc("GET /_/license/create_license", middleware.AuthMiddleware(handler.CreateLicense))
+	router.HandleFunc("/_/license/update_license", handler.UpdateLicense)
+	router.HandleFunc("/_/license/delete_license", handler.DeleteLicense)
+	router.HandleFunc("/_/license/all_license", handler.AllLicense)
 
 	server := &http.Server{
 		Addr:    s.addr,
